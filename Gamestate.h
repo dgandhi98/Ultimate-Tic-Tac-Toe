@@ -9,17 +9,19 @@ struct Node {
   GameState* child;
 };
 
+// Constructors
 GameState* emptyGameState();
 GameState* newGameState(char*);
 
+// Terminal Stuff
 int terminalState(GameState*);
-
 int utility(GameState*);
 
+// Find the result
 GameState* result(GameState*, Action*);
 
+// Minimax
 Action* minimaxSearch(GameState*);
-
 int maxValue(GameState*);
 int minValue(GameState*);
 

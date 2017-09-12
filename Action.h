@@ -6,6 +6,7 @@ struct Action {
   int move;
 };
 
+//Constructors
 Action* newAction(int);
 
 #endif

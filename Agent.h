@@ -7,6 +7,7 @@ struct Agent {
   char mark;
 };
 
+//Constructor
 Agent* newAgent(int, char);
 
 #endif
