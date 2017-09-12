@@ -1,7 +1,10 @@
 #ifndef TICTACTOE_GAMESTATE_H
 #define TICTACTOE_GAMESTATE_H
 
-typedef Node GameState;
+#include "Action.h"
+#include "Agent.h"
+
+typedef struct Node GameState;
 struct Node {
   char* gameBoard;
   int numPossMoves;
@@ -10,19 +13,23 @@ struct Node {
 };
 
 // Constructors
-GameState* emptyGameState();
-GameState* newGameState(char*);
+GameState* emptyGameState(Agent*);
+GameState* newGameState(Agent*, char*);
 
 // Terminal Stuff
 int terminalState(GameState*);
-int utility(GameState*);
+int utility(Agent*, GameState*);
+char getMarkWinner(GameState*);
 
 // Find the result
 GameState* result(GameState*, Action*);
 
 // Minimax
-Action* minimaxSearch(GameState*);
-int maxValue(GameState*);
-int minValue(GameState*);
+//Action* minimaxSearch(GameState*);
+//int maxValue(GameState*);
+//int minValue(GameState*);
+
+// Print
+void printGameState(GameState*);
 
 #endif

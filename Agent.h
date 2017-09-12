@@ -1,13 +1,14 @@
-#ifndef TICTACTOE_ACTION_H
-#define TICTACTOE_ACTION_H
+#ifndef TICTACTOE_AGENT_H
+#define TICTACTOE_AGENT_H
 
-typedef Agent Agent;
 struct Agent {
   int user;
   char mark;
 };
-
-//Constructor
+typedef struct Agent Agent;
+// Constructor
 Agent* newAgent(int, char);
 
+// Gets the next Agent
+Agent* toggleAgent(Agent*);
 #endif
