@@ -25,7 +25,7 @@ char getMarkWinner(GameState*);
 GameState* result(GameState*, Action*);
 
 // Minimax
-//Action* minimaxSearch(GameState*);
+Action* minimaxSearch(GameState*);
 //int maxValue(GameState*);
 //int minValue(GameState*);
 

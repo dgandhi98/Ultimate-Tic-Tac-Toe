@@ -1,5 +1,9 @@
 #include <stdlib.h>
 #include "Agent.h"
+#include "main.h"
+/*
+Global Variables Used: agents
+*/
 
 Agent* newAgent (int user, char mark) {
   Agent* a = malloc(sizeof(Agent));
@@ -9,13 +13,14 @@ Agent* newAgent (int user, char mark) {
 }
 
 Agent* toggleAgent (Agent* curr) {
-  Agent* res = malloc(sizeof(Agent));
-  res->user = curr->user^(1<<0);
+  //Agent* res = malloc(sizeof(Agent));
+  return players[curr->user^(1<<0)];
+  /*res->user = curr->user^(1<<0);
   if(curr->mark=='O') {
-    res->mark = 'X';
+    curr->mark = 'X';
   }
   else {
-    res->mark = 'O';
+    curr->mark = 'O';
   }
-  return res;
+  return curr;*/
 }

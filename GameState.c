@@ -11,6 +11,7 @@ GameState* emptyGameState(Agent* a) {
   for(int i = 1; i < 10; i++) {
     gs->gameBoard[i] = '#';
   }
+  gs->numPossMoves = 9;
   gs->toMove = a;
   return gs;
 }
@@ -19,8 +20,12 @@ GameState* emptyGameState(Agent* a) {
 GameState* newGameState(Agent* a, char* board) {
   GameState* gs = malloc(sizeof(GameState));
   gs->gameBoard = malloc(10*sizeof(char));
+  gs->numPossMoves = 0;
   for(int i = 1; i < 10; i++) {
     gs->gameBoard[i] = board[i];
+    if(board[i]=='#') {
+      gs->numPossMoves++;
+    }
   }
   gs->toMove = a;
   return gs;
@@ -88,7 +93,32 @@ GameState* result(GameState* gs, Action* act) {
 }
 
 // Minimax
-//Action* minimaxSearch(GameState*);
+Action* minimaxSearch(GameState* gs) {
+  /*
+  int max = -2; //serves as -inf
+  Action* maxAct = newAction(0);
+  for(int i = 1; i <=9; i++) {
+    if(gs->gameBoard[i]=='#') {
+      Action* currAct = newAction(i);
+      int util = minValue(result(gs, currAct));
+      if(util > max) {
+        max = util;
+        free(maxAct);
+        maxAct = currAct;
+      }
+      else {
+        free(currAct);
+      }
+    }
+  }
+  return maxAct;
+  */
+  for(int i = 1; i <= 9; i++) {
+    if(gs->gameBoard[i]=='#') {
+      return newAction(i);
+    }
+  }
+}
 //int maxValue(GameState*);
 //int minValue(GameState*);
 
