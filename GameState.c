@@ -118,6 +118,7 @@ Action* minimaxSearch(GameState* gs) {
       return newAction(i);
     }
   }
+  return newAction(0);
 }
 //int maxValue(GameState*);
 //int minValue(GameState*);

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "GameState.h"
 #include "Agent.h"
 #include "Action.h"
@@ -8,10 +9,11 @@ int main(int argc, char* argv[]) {
 
 int playContinue = 1;
 int userChosen = 0;
-char userMark = '';
+char userMark;
 int userIndex, compIndex;
 //while(playContinue) {
-  printf("Would you like to be X or O?");
+  // Setup players
+  printf("Would you like to be X or O?\n");
   userChosen = 0;
   while(!userChosen) {
     scanf("%c", &userMark);
@@ -27,6 +29,8 @@ int userIndex, compIndex;
       userChosen = 1;
     }
     else {
+      // bad input
+      printf("Bad Input\n");
       userChosen = 0;
     }
   }
@@ -45,37 +49,65 @@ int userIndex, compIndex;
 
   GameState* newBoard = emptyGameState(players[1]);
   printGameState(newBoard);
-  GameState** games;
+  GameState** games = malloc(10*sizeof(GameState*));
   *(games) = newBoard;
-  int theMove;
+  int userMove;
+  int nextMoveIsUser;
+  // Play Game
   while(!terminalState(*(games))) {
-    int nextMoveIsUser = *(games)->toMove->user;
+    nextMoveIsUser = (*(games))->toMove->user;
+    printf("%d\n", nextMoveIsUser);
     if(nextMoveIsUser) {
-      theMove = 0;
+      userMove = 0;
       userChosen = 0;
       while(!userChosen) {
-        scanf("%d", &theMove);
-        if(theMove <= 9 && theMove >= 1 &&
-           (*(games))->gameBoard[theMove]=='#') {
-             *(games+1) = result((*games), newAction(theMove));
+        printf("Type your move (1-9)\n");
+        scanf("%d", &userMove);
+        if(userMove <= 9 && userMove >= 1 &&
+           (*(games))->gameBoard[userMove]=='#') {
+             *(games+1) = result((*games), newAction(userMove));
+             userChosen = 1;
         }
         else {
-
+          //bad input
+          printf("Bad Input\n");
+          userChosen = 0;
         }
       }
     }
     else {
-
+      Action* compMove = minimaxSearch(*(games));
+      int compIntMove = compMove->move;
+      if(compIntMove <= 9 && compIntMove >= 1 &&
+         (*(games))->gameBoard[compIntMove]=='#') {
+           printf("Computer Moves to %d\n", compIntMove);
+           *(games+1) = result((*games), compMove);
+      }
+      else {
+        printf("Computer Broke...\n");
+        return 0;
+      }
     }
     games++;
+    printGameState(*(games));
   }
-  GameState* next = result(newBoard, newAction(1));
+  int utilRespectToUser = utility(user, *(games));
+  if( utilRespectToUser == 1) {
+    printf("You Won!\n");
+  }
+  else if(utilRespectToUser==0) {
+    printf("Draw!\n");
+  }
+  else if(utilRespectToUser==-1) {
+    printf("Game Over! Computer Won.\n");
+  }
+  /*GameState* next = result(newBoard, newAction(1));
   printf("\n");
   printGameState(next);
 
   GameState* next2 = result(next, newAction(5));
   printf("\n");
   printGameState(next2);
-
+*/
 //}
 }
