@@ -3,6 +3,7 @@
 #include "GameState.h"
 #include "Action.h"
 #include "Agent.h"
+#include "main.h"
 
 // creates new initial state
 GameState* emptyGameState(Agent* a) {
@@ -89,18 +90,20 @@ char getMarkWinner(GameState* gs) {
 GameState* result(GameState* gs, Action* act) {
   GameState* res = newGameState(toggleAgent(gs->toMove), gs->gameBoard);
   res->gameBoard[act->move] = gs->toMove->mark;
+  res->numPossMoves--;
   return res;
 }
 
 // Minimax
 Action* minimaxSearch(GameState* gs) {
-  /*
+
   int max = -2; //serves as -inf
   Action* maxAct = newAction(0);
-  for(int i = 1; i <=9; i++) {
+  for(int i = 1; i <= 9; i++) {
     if(gs->gameBoard[i]=='#') {
       Action* currAct = newAction(i);
-      int util = minValue(result(gs, currAct));
+      GameState* currState = result(gs, currAct);
+      int util = minValue(currState);
       if(util > max) {
         max = util;
         free(maxAct);
@@ -109,19 +112,55 @@ Action* minimaxSearch(GameState* gs) {
       else {
         free(currAct);
       }
+      free(currState->gameBoard);
+      free(currState);
     }
   }
   return maxAct;
-  */
-  for(int i = 1; i <= 9; i++) {
+
+  /*for(int i = 1; i <= 9; i++) {
     if(gs->gameBoard[i]=='#') {
       return newAction(i);
     }
   }
-  return newAction(0);
+  return newAction(0);*/
 }
-//int maxValue(GameState*);
-//int minValue(GameState*);
+int maxValue(GameState* gs) {
+  if(terminalState(gs)) {
+    return utility(players[compIndex], gs);
+  }
+  int v = -2;
+  for(int i = 1; i <= 9; i++) {
+    if(gs->gameBoard[i]=='#') {
+      Action* currAct = newAction(i);
+      GameState* currState = result(gs, currAct);
+      int currVal = minValue(currState);
+      v = v > currVal? v:currVal; // get max
+      free(currState->gameBoard);
+      free(currState);
+      free(currAct);
+    }
+  }
+  return v;
+}
+int minValue(GameState* gs) {
+  if(terminalState(gs)) {
+    return utility(players[compIndex], gs);
+  }
+  int v = 2;
+  for(int i = 1; i <= 9; i++) {
+    if(gs->gameBoard[i]=='#') {
+      Action* currAct = newAction(i);
+      GameState* currState = result(gs, currAct);
+      int currVal = maxValue(currState);
+      v = v > currVal? currVal:v; // get min
+      free(currState->gameBoard);
+      free(currState);
+      free(currAct);
+    }
+  }
+  return v;
+}
 
 // Print
 /**

@@ -5,13 +5,13 @@
 #include "Action.h"
 
 Agent* players[2];
+int userIndex, compIndex;
 int main(int argc, char* argv[]) {
 
 int playContinue = 1;
 int userChosen = 0;
 char userMark;
-int userIndex, compIndex;
-//while(playContinue) {
+while(playContinue) {
   // Setup players
   printf("Would you like to be X or O?\n");
   userChosen = 0;
@@ -56,7 +56,7 @@ int userIndex, compIndex;
   // Play Game
   while(!terminalState(*(games))) {
     nextMoveIsUser = (*(games))->toMove->user;
-    printf("%d\n", nextMoveIsUser);
+    //printf("%d\n", nextMoveIsUser);
     if(nextMoveIsUser) {
       userMove = 0;
       userChosen = 0;
@@ -91,6 +91,8 @@ int userIndex, compIndex;
     games++;
     printGameState(*(games));
   }
+
+  // Give Results
   int utilRespectToUser = utility(user, *(games));
   if( utilRespectToUser == 1) {
     printf("You Won!\n");
@@ -101,13 +103,6 @@ int userIndex, compIndex;
   else if(utilRespectToUser==-1) {
     printf("Game Over! Computer Won.\n");
   }
-  /*GameState* next = result(newBoard, newAction(1));
-  printf("\n");
-  printGameState(next);
-
-  GameState* next2 = result(next, newAction(5));
-  printf("\n");
-  printGameState(next2);
-*/
-//}
+  while(getchar()!='\n');
+}
 }

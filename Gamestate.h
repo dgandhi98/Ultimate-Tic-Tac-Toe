@@ -26,8 +26,8 @@ GameState* result(GameState*, Action*);
 
 // Minimax
 Action* minimaxSearch(GameState*);
-//int maxValue(GameState*);
-//int minValue(GameState*);
+int maxValue(GameState*);
+int minValue(GameState*);
 
 // Print
 void printGameState(GameState*);
