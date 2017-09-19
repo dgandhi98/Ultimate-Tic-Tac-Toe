@@ -13,22 +13,11 @@ Agent* newAgent (int user, char mark) {
 }
 
 Agent* toggleAgent (Agent* curr) {
-  //Agent* res = malloc(sizeof(Agent));
-  //return players[curr->user^(1<<0)];
   if(curr->mark=='X') {
     return players[0];
   }
   else if(curr->mark=='O') {
     return players[1];
   }
-
   return newAgent(0, 'E');
-  /*res->user = curr->user^(1<<0);
-  if(curr->mark=='O') {
-    curr->mark = 'X';
-  }
-  else {
-    curr->mark = 'O';
-  }
-  return curr;*/
 }

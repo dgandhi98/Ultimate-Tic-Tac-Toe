@@ -7,8 +7,8 @@
 # Edited: 9/11/17
 #
 CC = gcc
-SRCS = Agent.c Action.c GameState.c main.c
-HDRS = Agent.h Action.h GameState.h
+SRCS = Agent.c Action.c SuperAction.c GameState.c SuperGameState.c main.c
+HDRS = Agent.h Action.h SuperAction.h GameState.h SuperGameState.h main.h
 OBJS = $(SRCS:.c=.o)
 EXE = ttt
 

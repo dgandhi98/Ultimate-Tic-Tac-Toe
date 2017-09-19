@@ -59,6 +59,8 @@ int utility(Agent* a, GameState* gs) {
   }
   return 0;
 }
+
+// return the winner
 char getMarkWinner(GameState* gs) {
   // check rows
   for(int i = 0; i < 3;i++) {
@@ -74,7 +76,7 @@ char getMarkWinner(GameState* gs) {
         return gs->gameBoard[(i+1)];
     }
   }
-  //check diagonals
+  // check diagonals
   if(gs->gameBoard[1]==gs->gameBoard[5] &&
      gs->gameBoard[1]==gs->gameBoard[9]) {
        return gs->gameBoard[1];
@@ -83,10 +85,10 @@ char getMarkWinner(GameState* gs) {
      gs->gameBoard[3]==gs->gameBoard[7]) {
        return gs->gameBoard[3];
   }
-
   return '#';
 }
 
+//returns result with given action
 GameState* result(GameState* gs, Action* act) {
   GameState* res = newGameState(toggleAgent(gs->toMove), gs->gameBoard);
   res->gameBoard[act->move] = gs->toMove->mark;
@@ -96,7 +98,6 @@ GameState* result(GameState* gs, Action* act) {
 
 // Minimax
 Action* minimaxSearch(GameState* gs) {
-
   int max = -2; //serves as -inf
   Action* maxAct = newAction(0);
   for(int i = 1; i <= 9; i++) {
@@ -117,13 +118,6 @@ Action* minimaxSearch(GameState* gs) {
     }
   }
   return maxAct;
-
-  /*for(int i = 1; i <= 9; i++) {
-    if(gs->gameBoard[i]=='#') {
-      return newAction(i);
-    }
-  }
-  return newAction(0);*/
 }
 int maxValue(GameState* gs) {
   if(terminalState(gs)) {
