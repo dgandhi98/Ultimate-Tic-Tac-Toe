@@ -65,24 +65,28 @@ char getMarkWinner(GameState* gs) {
   // check rows
   for(int i = 0; i < 3;i++) {
     if(gs->gameBoard[i*3+1]==gs->gameBoard[i*3+2]
-      && gs->gameBoard[i*3+1]==gs->gameBoard[i*3+3]) {
+      && gs->gameBoard[i*3+1]==gs->gameBoard[i*3+3]
+      && gs->gameBoard[i*3+1]!='#') {
         return gs->gameBoard[i*3+1];
     }
   }
   // check columns
   for(int i = 0; i < 3;i++) {
     if(gs->gameBoard[(i+1)]==gs->gameBoard[(i+1)+3]
-      && gs->gameBoard[(i+1)]==gs->gameBoard[(i+1)+6]) {
+      && gs->gameBoard[(i+1)]==gs->gameBoard[(i+1)+6]
+      && gs->gameBoard[i+1]!='#') {
         return gs->gameBoard[(i+1)];
     }
   }
   // check diagonals
   if(gs->gameBoard[1]==gs->gameBoard[5] &&
-     gs->gameBoard[1]==gs->gameBoard[9]) {
+     gs->gameBoard[1]==gs->gameBoard[9]
+     && gs->gameBoard[1]!='#') {
        return gs->gameBoard[1];
   }
   if(gs->gameBoard[3]==gs->gameBoard[5] &&
-     gs->gameBoard[3]==gs->gameBoard[7]) {
+     gs->gameBoard[3]==gs->gameBoard[7]
+     && gs->gameBoard[3]!='#') {
        return gs->gameBoard[3];
   }
   return '#';

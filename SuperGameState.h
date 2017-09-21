@@ -12,7 +12,7 @@ struct SuperNode {
   int numPossMoves;
   int boardToMove;
   Agent* toMove;
-  SuperGameState* child;
+  int* numPossMovesPerBoard;
 };
 
 // Constructors
@@ -21,17 +21,17 @@ SuperGameState* newSuperGameState(Agent*, SuperGameState*);
 
 // Terminal Stuff
 // TerminalState can be shared with old one if using single board
-// int terminalState(GameState*);
+int superTerminalState(SuperGameState*);
 // utility will be based on heuristic now
 // int heuristic(Agent*, GameState);
 // can be shared with other one if single board is terminal
-// char getMarkWinner(GameState*);
+char getSuperMarkWinner(char*);
 
 // Find the result
 SuperGameState* superResult(SuperGameState*, SuperAction*);
 
-// Minimax
-//SuperAction* minimaxSearch(SuperGameState*);
+// Searching
+SuperAction* superSearch(SuperGameState*);
 //int maxValue(SuperGameState*);
 //int minValue(SuperGameState*);
 
