@@ -126,19 +126,32 @@ SuperGameState* superResult(SuperGameState* sgs, SuperAction* sAct) {
       for(int i=1; i<=9; i++) {
         boardToCheck[i] = newSGS->games[10*(sAct->superMove)+i];
       }
-      if(getSuperMarkWinner(boardToCheck)=='#'
-        && newSGS->numPossMovesPerBoard[sAct->superMove]==0) {
+      if(getSuperMarkWinner(boardToCheck) == '#'
+        && newSGS->numPossMovesPerBoard[sAct->superMove] == 0) {
           newSGS->superGameBoard[sAct->superMove] = '-';
+          //printf("Draw on board %d!\n", sAct->superMove);
       }
-      else if(getSuperMarkWinner(boardToCheck)=='X') {
+      else if(getSuperMarkWinner(boardToCheck) == 'X') {
         newSGS->superGameBoard[sAct->superMove] = 'X';
-        newSGS->numPossMoves-=newSGS->numPossMovesPerBoard[sAct->superMove];
-        newSGS->numPossMovesPerBoard[sAct->superMove]=0;
+        newSGS->numPossMoves -= newSGS->numPossMovesPerBoard[sAct->superMove];
+        newSGS->numPossMovesPerBoard[sAct->superMove] = 0;
+        /*if(players[userIndex]->mark == 'X') {
+          printf("You won board %d!\n", sAct->superMove);
+        }
+        else {
+          printf("Computer won board %d!\n", sAct->superMove);
+        }*/
       }
-      else if(getSuperMarkWinner(boardToCheck)=='O') {
+      else if(getSuperMarkWinner(boardToCheck) == 'O') {
         newSGS->superGameBoard[sAct->superMove] = 'O';
-        newSGS->numPossMoves-=newSGS->numPossMovesPerBoard[sAct->superMove];
-        newSGS->numPossMovesPerBoard[sAct->superMove]=0;
+        newSGS->numPossMoves -= newSGS->numPossMovesPerBoard[sAct->superMove];
+        newSGS->numPossMovesPerBoard[sAct->superMove] = 0;
+        /*if(players[userIndex]->mark == 'O') {
+          printf("You won board %d!\n", sAct->superMove);
+        }
+        else {
+          printf("Computer won board %d!\n", sAct->superMove);
+        }*/
       }
 
       if(newSGS->superGameBoard[sAct->move]=='#') {
@@ -163,7 +176,7 @@ SuperAction* superSearch(SuperGameState* sgs) {
   SuperAction* currAct = NULL;
   SuperAction* maxAct = NULL;
   SuperGameState* currSGS = NULL;
-  printf("declarations\n");
+  //printf("declarations\n");
   int max = -2000;
   if(sgs->boardToMove == 0) {
     for(int i = 1; i <= 9; i++) {
@@ -211,7 +224,7 @@ SuperAction* superSearch(SuperGameState* sgs) {
 }
 
 int cutoffTest(SuperGameState* sgs, int dep) {
-  if(superTerminalState(sgs) || dep==5) {
+  if(superTerminalState(sgs) || dep==3) {
     return 1;
   }
   return 0;
@@ -232,10 +245,12 @@ int heuristicEval(Agent* a, SuperGameState* sgs) {
   else if(winner==a->mark) {
     h = 1000;
   }
+  // agent lost
   else if(winner!=a->mark && winner!='#') {
     h = -1000;
   }
-  else if(winner=='#') { // Not a Terminal Case
+  // Not a Terminal Case
+  else if(winner=='#') {
     int numWins = 0;
     int numLoss = 0;
     for(int i = 1; i<=9; i++) {
@@ -257,7 +272,7 @@ int heuristicEval(Agent* a, SuperGameState* sgs) {
       h -= 10;
     }
   }
-  printf("h: %d\n", h);
+  //printf("h: %d\n", h);
   return h;
 }
 int superMaxValue(SuperGameState* sgs, int alp, int bet, int dep) {
