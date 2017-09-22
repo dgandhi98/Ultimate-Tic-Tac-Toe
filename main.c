@@ -9,23 +9,6 @@
 Agent* players[2];
 int userIndex, compIndex;
 int main(int argc, char* argv[]) {
-  /*players[0] = newAgent(0, 'O');
-  players[1] = newAgent(1, 'X');
-  SuperGameState* sgs1 = emptySuperGameState(players[1]);
-  printSuperGameState(sgs1);
-  printf("\n");
-  SuperAction* sAct1 = newSuperAction(5, 5);
-  SuperGameState* sgs2 = superResult(sgs1, sAct1);
-  printSuperGameState(sgs2);
-  printf("\n");
-  SuperAction* sAct2 = newSuperAction(5, 1);
-  SuperGameState* sgs3 = superResult(sgs2, sAct2);
-  printSuperGameState(sgs3);
-  printf("\n");
-  SuperAction* sAct3 = newSuperAction(1, 5);
-  SuperGameState* sgs4 = superResult(sgs3, sAct3);
-  printSuperGameState(sgs4);
-*/
   int playContinue = 1;
   int userChosen = 0;
   char userMark;
@@ -164,7 +147,7 @@ int main(int argc, char* argv[]) {
 
     SuperGameState* newBoard = emptySuperGameState(players[1]);
     printSuperGameState(newBoard);
-    SuperGameState** sGames = malloc(10*sizeof(SuperGameState*));
+    SuperGameState** sGames = malloc(50*sizeof(SuperGameState*));
     *(sGames) = newBoard;
     int userMove1;
     int userMove2;
@@ -200,7 +183,7 @@ int main(int argc, char* argv[]) {
                      //free(validAction);
                    }
                    else {
-                     printf("Move %d isn't available in board %d",userMove2,
+                     printf("Move %d isn't available in board %d\n",userMove2,
                       userMove1);
                      userChosen = 0;
                    }
@@ -230,13 +213,17 @@ int main(int argc, char* argv[]) {
       sGames++;
       printSuperGameState(*(sGames));
     }
-    while(*(sGames)) {
-      freeSuperGameState(*(sGames));
+    int kek = 0;
+    printf("starting\n");
+    while(*(sGames+kek)) {
+        freeSuperGameState(*(sGames+kek));
+        kek++;
+        printf("%d\n", kek);
     }
-    free(sGames);
+    printf("done\n");
     free(players[0]);
     free(players[1]);
-    free(players);
+
     while(getchar()!='\n');
 /*
     // Give Results
@@ -253,7 +240,7 @@ int main(int argc, char* argv[]) {
 */
 
   }
-
+  free(players);
 
 
 }

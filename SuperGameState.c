@@ -211,7 +211,7 @@ SuperAction* superSearch(SuperGameState* sgs) {
 }
 
 int cutoffTest(SuperGameState* sgs, int dep) {
-  if(superTerminalState(sgs) || dep==4) {
+  if(superTerminalState(sgs) || dep==5) {
     return 1;
   }
   return 0;
@@ -222,22 +222,23 @@ int heuristicEval(Agent* a, SuperGameState* sgs) {
   // +20*(number of boards won - number of boards lost)
   // +10 if gets to choose any board
   // (not implemented)+5 if gets to use board with no other marks in it
-  int h=0;
+  int h = 0;
   char winner = getSuperMarkWinner(sgs->superGameBoard);
   //draw
   if(sgs->numPossMoves==0 && winner=='#') {
-    return 0;
+    h = 0;
   }
   // agent won
   else if(winner==a->mark) {
-    return 1000;
+    h = 1000;
   }
   else if(winner!=a->mark && winner!='#') {
-    return -1000;
+    h = -1000;
   }
   else if(winner=='#') { // Not a Terminal Case
-    int numWins, numLoss;
-    for(int i = 1; i<=9;i++) {
+    int numWins = 0;
+    int numLoss = 0;
+    for(int i = 1; i<=9; i++) {
       if(sgs->superGameBoard[i]==a->mark) {
         numWins++;
       }
@@ -246,14 +247,14 @@ int heuristicEval(Agent* a, SuperGameState* sgs) {
       && sgs->superGameBoard[i]!='#') {
         numLoss++;
       }
-      h+=20*(numWins-numLoss);
+      h += 20*(numWins-numLoss);
     }
 
     if(sgs->toMove==a && sgs->boardToMove==0) {
-      h+=10;
+      h += 10;
     }
     else if(sgs->boardToMove==0) {
-      h-=10;
+      h -= 10;
     }
   }
   printf("h: %d\n", h);
