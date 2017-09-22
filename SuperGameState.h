@@ -18,13 +18,10 @@ struct SuperNode {
 // Constructors
 SuperGameState* emptySuperGameState(Agent*);
 SuperGameState* newSuperGameState(Agent*, SuperGameState*);
+int freeSuperGameState(SuperGameState*);
 
 // Terminal Stuff
-// TerminalState can be shared with old one if using single board
 int superTerminalState(SuperGameState*);
-// utility will be based on heuristic now
-// int heuristic(Agent*, GameState);
-// can be shared with other one if single board is terminal
 char getSuperMarkWinner(char*);
 
 // Find the result
@@ -32,8 +29,10 @@ SuperGameState* superResult(SuperGameState*, SuperAction*);
 
 // Searching
 SuperAction* superSearch(SuperGameState*);
-//int maxValue(SuperGameState*);
-//int minValue(SuperGameState*);
+int cutoffTest(SuperGameState*, int);
+int heuristicEval(Agent*, SuperGameState* );
+int superMaxValue(SuperGameState*, int, int, int);
+int superMinValue(SuperGameState*, int, int, int);
 
 // Print
 void printSuperGameState(SuperGameState*);

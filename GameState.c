@@ -60,6 +60,12 @@ int utility(Agent* a, GameState* gs) {
   return 0;
 }
 
+int freeGameState(GameState* gs) {
+  free(gs->gameBoard);
+  free(gs);
+  return 1;
+}
+
 // return the winner
 char getMarkWinner(GameState* gs) {
   // check rows
@@ -117,8 +123,7 @@ Action* minimaxSearch(GameState* gs) {
       else {
         free(currAct);
       }
-      free(currState->gameBoard);
-      free(currState);
+      freeGameState(currState);
     }
   }
   return maxAct;
@@ -134,8 +139,7 @@ int maxValue(GameState* gs) {
       GameState* currState = result(gs, currAct);
       int currVal = minValue(currState);
       v = v > currVal? v:currVal; // get max
-      free(currState->gameBoard);
-      free(currState);
+      freeGameState(currState);
       free(currAct);
     }
   }
@@ -152,8 +156,7 @@ int minValue(GameState* gs) {
       GameState* currState = result(gs, currAct);
       int currVal = maxValue(currState);
       v = v > currVal? currVal:v; // get min
-      free(currState->gameBoard);
-      free(currState);
+      freeGameState(currState);
       free(currAct);
     }
   }

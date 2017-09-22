@@ -178,42 +178,65 @@ int main(int argc, char* argv[]) {
         userMove2 = 0;
         userChosen = 0;
         while(!userChosen) {
-          printf("Type 2 numbers for your moves (1-9) and (1-9)\n");
+          printf("Type 2 numbers for your moves: (1-9) and (1-9). ");
+          if((*(sGames))->boardToMove!=0) {
+            printf("You must move in board %d.\n", (*(sGames))->boardToMove);
+          }
+          else {
+            printf("You can move in any board.\n");
+          }
           scanf("%d %d", &userMove1, &userMove2);
-          if(userMove1 <= 9 && userMove1 >= 1 &&
-            (*(sGames))->superGameBoard[userMove1]=='#') {
-               if((*(sGames))->boardToMove == userMove1
-                 || (*(sGames))->boardToMove==0) {
+          if(userMove1 <= 9 && userMove1 >= 1) {
+
+               if(
+                 ((*(sGames))->boardToMove == userMove1 || (*(sGames))->boardToMove == 0)
+                 && (*(sGames))->superGameBoard[userMove1]=='#') {
+
                    if((*(sGames))->games[10*userMove1 + userMove2] == '#' ) {
-                     *(sGames+1) = superResult((*sGames),
-                     newSuperAction(userMove1, userMove2));
+                     printf("wassup\n");
+                     SuperAction* validAction = newSuperAction(userMove1, userMove2);
+                     *(sGames+1) = superResult((*sGames),validAction);
                      userChosen = 1;
-                }
-                else {
-                  printf("Not Available in move");
-                }
+                     //free(validAction);
+                   }
+                   else {
+                     printf("Move %d isn't available in board %d",userMove2,
+                      userMove1);
+                     userChosen = 0;
+                   }
              }
              else {
-               printf("Bad Input");
+               printf("Can't move in board %d\n", userMove1);
+               userChosen = 0;
              }
           }
           else {
             //bad input
-            printf("Bad Input. Not Available in super moves\n");
+            printf("Bad Input\n");
             userChosen = 0;
           }
         }
       }
       else {
+        printf("computer searching...\n");
         SuperAction* compMove = superSearch(*(sGames));
+        //SuperAction* compMove = newSuperAction(5,1);
         int compIntMove1 = compMove->superMove;
         int compIntMove2 = compMove->move;
         printf("Computer Moves to %d %d\n", compIntMove1, compIntMove2);
         *(sGames+1) = superResult((*sGames), compMove);
+        free(compMove);
       }
       sGames++;
       printSuperGameState(*(sGames));
     }
+    while(*(sGames)) {
+      freeSuperGameState(*(sGames));
+    }
+    free(sGames);
+    free(players[0]);
+    free(players[1]);
+    free(players);
     while(getchar()!='\n');
 /*
     // Give Results
@@ -228,6 +251,9 @@ int main(int argc, char* argv[]) {
       printf("Game Over! Computer Won.\n");
     }
 */
+
   }
+
+
 
 }

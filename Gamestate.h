@@ -9,12 +9,12 @@ struct Node {
   char* gameBoard;
   int numPossMoves;
   Agent* toMove;
-  GameState* child;
 };
 
 // Constructors
 GameState* emptyGameState(Agent*);
 GameState* newGameState(Agent*, char*);
+int freeGameState(GameState*);
 
 // Terminal Stuff
 int terminalState(GameState*);
