@@ -129,29 +129,16 @@ SuperGameState* superResult(SuperGameState* sgs, SuperAction* sAct) {
       if(getSuperMarkWinner(boardToCheck) == '#'
         && newSGS->numPossMovesPerBoard[sAct->superMove] == 0) {
           newSGS->superGameBoard[sAct->superMove] = '-';
-          //printf("Draw on board %d!\n", sAct->superMove);
       }
       else if(getSuperMarkWinner(boardToCheck) == 'X') {
         newSGS->superGameBoard[sAct->superMove] = 'X';
         newSGS->numPossMoves -= newSGS->numPossMovesPerBoard[sAct->superMove];
         newSGS->numPossMovesPerBoard[sAct->superMove] = 0;
-        /*if(players[userIndex]->mark == 'X') {
-          printf("You won board %d!\n", sAct->superMove);
-        }
-        else {
-          printf("Computer won board %d!\n", sAct->superMove);
-        }*/
       }
       else if(getSuperMarkWinner(boardToCheck) == 'O') {
         newSGS->superGameBoard[sAct->superMove] = 'O';
         newSGS->numPossMoves -= newSGS->numPossMovesPerBoard[sAct->superMove];
         newSGS->numPossMovesPerBoard[sAct->superMove] = 0;
-        /*if(players[userIndex]->mark == 'O') {
-          printf("You won board %d!\n", sAct->superMove);
-        }
-        else {
-          printf("Computer won board %d!\n", sAct->superMove);
-        }*/
       }
 
       if(newSGS->superGameBoard[sAct->move]=='#') {
@@ -176,7 +163,6 @@ SuperAction* superSearch(SuperGameState* sgs) {
   SuperAction* currAct = NULL;
   SuperAction* maxAct = NULL;
   SuperGameState* currSGS = NULL;
-  //printf("declarations\n");
   int max = -2000;
   if(sgs->boardToMove == 0) {
     for(int i = 1; i <= 9; i++) {
@@ -281,7 +267,6 @@ int superMaxValue(SuperGameState* sgs, int alp, int bet, int dep) {
   if(cutoffTest(sgs, dep)) {
     return heuristicEval(players[compIndex], sgs);
   }
-
   int currV = -2000;
   if(sgs->boardToMove == 0) {
     for(int i = 1; i <= 9; i++) {
@@ -291,11 +276,12 @@ int superMaxValue(SuperGameState* sgs, int alp, int bet, int dep) {
             currAct = newSuperAction(i,j);
             currSGS = superResult(sgs, currAct);
             int newV = superMinValue(currSGS, alp, bet, dep+1);
+            freeSuperGameState(currSGS);
+            free(currAct);
             currV = currV > newV ? currV:newV;
             if(currV >= bet) {
               return currV;
             }
-            freeSuperGameState(currSGS);
             alp = alp > currV ? alp:currV;
           }
         }
@@ -309,10 +295,11 @@ int superMaxValue(SuperGameState* sgs, int alp, int bet, int dep) {
         currSGS = superResult(sgs, currAct);
         int newV = superMinValue(currSGS, alp, bet, dep+1);
         currV = currV > newV ? currV:newV;
+        freeSuperGameState(currSGS);
+        free(currAct);
         if(currV >= bet) {
           return currV;
         }
-        freeSuperGameState(currSGS);
         alp = alp > currV ? alp:currV;
       }
     }
@@ -336,10 +323,11 @@ int superMinValue(SuperGameState* sgs, int alp, int bet, int dep) {
             currSGS = superResult(sgs, currAct);
             int newV = superMaxValue(currSGS, alp, bet, dep+1);
             currV = currV < newV ? currV:newV;
+            freeSuperGameState(currSGS);
+            free(currAct);
             if(currV <= alp) {
               return currV;
             }
-            freeSuperGameState(currSGS);
             bet = bet < currV ? bet:currV;
           }
         }
@@ -353,10 +341,11 @@ int superMinValue(SuperGameState* sgs, int alp, int bet, int dep) {
         currSGS = superResult(sgs, currAct);
         int newV = superMaxValue(currSGS, alp, bet, dep+1);
         currV = currV < newV ? currV:newV;
+        freeSuperGameState(currSGS);
+        free(currAct);
         if(currV <= alp) {
           return currV;
         }
-        freeSuperGameState(currSGS);
         bet = bet < currV ? bet:currV;
       }
     }
